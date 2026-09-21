@@ -110,6 +110,10 @@ h1 .hl{color:var(--tick)}
   opacity:.3;stroke:hsl(var(--h) 46% 80%);fill:none;stroke-width:1.5}
 .av .avi{position:relative;font-family:var(--mono);font-weight:600;font-size:14px;
   letter-spacing:.01em;color:hsl(var(--h) 52% 88%)}
+.av .avl{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;padding:5px;opacity:0;transition:opacity .28s ease}
+.av .avl.ok{opacity:1}
+.av.s .avl{padding:4px}
+.av.l .avl{padding:7px}
 .av.s{width:34px;height:34px;border-radius:10px}
 .av.s .avi{font-size:11.6px}
 .av.l{width:54px;height:54px;border-radius:15px}

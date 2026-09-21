@@ -6,39 +6,39 @@
    crypto-donation page on The Giving Block. Names, tax IDs and cause
    categories are taken verbatim from those pages. */
 var CH = [
- ["The Bowery Mission","the-bowery-mission","13-1617086",["Homelessness","Hunger","Children & Youth"],"bowl"],
- ["USA for UNHCR","usa-for-unhcr","52-1662800",["Immigration & Refugees","International Development","Women & Girls"],"globe"],
- ["Room to Read","room-to-read","91-2003533",["Education & Training","Children & Youth","Women & Girls"],"book"],
- ["Muscular Dystrophy Association","muscular-dystrophy-association","13-1665552",["Health & Medicine"],"cross"],
- ["San Diego Zoo Wildlife Alliance","san-diego-zoo-wildlife-alliance","95-1648219",["Animals","Arts & Culture","Education & Training"],"paw"],
- ["Guide Dogs for the Blind","guide-dogs-for-the-blind","94-1196195",["Animals","Children & Youth","Education & Training"],"paw"],
- ["WildAid","wildaid","20-3644441",["Animals","Environment","Education & Training"],"leaf"],
- ["Sea Turtle Conservancy","sea-turtle-conservancy","59-6151069",["Animals","Environment","Education & Training"],"leaf"],
- ["Crisis Text Line, Inc.","crisis-text-line-inc","46-5039599",["Health & Medicine","Technology"],"chat"],
- ["Utah Food Bank","utah-food-bank","87-0212453",["Hunger"],"bowl"],
- ["The Sentencing Project","the-sentencing-project","52-1472546",["Human Rights","Racial Justice","Education & Training"],"scale"],
- ["Love146","love146","20-1168284",["Children & Youth","Human Rights","Education & Training"],"heart"],
- ["The Farmlink Project","the-farmlink-project","85-1398171",["Hunger","Environment","Disaster Response"],"bowl"],
- ["Ali Forney Center","ali-forney-center","30-0104507",["Homelessness","Hunger","LGBTQ"],"roof"],
- ["Internet Security Research Group","internet-security-research-group","46-3344200",["Technology"],"chip"],
- ["Elizabeth Glaser Pediatric AIDS Foundation","elizabeth-glaser-pediatric-aids-foundation","95-4191698",["Health & Medicine","Children & Youth","International Development"],"cross"],
- ["Oregon Humane Society","oregon-humane-society","93-0386880",["Animals","Disaster Response","Education & Training"],"paw"],
- ["Chimp Haven","chimp-haven","74-2766663",["Animals"],"paw"],
- ["Wildlife Conservation Society","wildlife-conservation-society","13-1740011",["Animals","Environment","International Development"],"leaf"],
- ["NephCure Kidney International","nephcure-kidney-international","38-3569922",["Health & Medicine"],"cross"],
- ["Human-I-T","human-i-t","46-0773284",["Technology","Children & Youth","International Development"],"chip"],
- ["The Turing Trust","the-turing-trust","SC046150",["Technology","Education & Training","International Development"],"chip"],
- ["Common Sense Media","common-sense-media","41-2024986",["Children & Youth","Education & Training","Technology"],"book"],
- ["Fresh Air Fund","fresh-air-fund","13-1656653",["Children & Youth"],"leaf"],
- ["Food Bank of Iowa","food-bank-of-iowa","42-1177880",["Hunger"],"bowl"],
- ["Pancreatic Cancer Action Network, Inc.","pancreatic-cancer-action-network-inc","33-0841281",["Health & Medicine","Education & Training"],"cross"],
- ["Diabetes Research Institute Foundation","diabetes-research-institute-foundation","59-1361955",["Health & Medicine"],"cross"],
- ["Choose Love","choose-love","83-1378746",["Immigration & Refugees","LGBTQ","Women & Girls"],"globe"],
- ["Movember Canada","movember-canada","84821 5604 RR0001",["Health & Medicine"],"cross"],
- ["Boys Hope Girls Hope","boys-hope-girls-hope","51-0182614",["Children & Youth","Education & Training","Racial Justice"],"book"],
- ["Good Sports","good-sports","75-3138664",["Children & Youth","Health & Medicine","Racial Justice"],"ball"],
- ["School on Wheels, Inc.","school-on-wheels-inc","95-4422640",["Children & Youth","Education & Training","Homelessness"],"book"]
-].map(function(r){return {name:r[0],slug:r[1],ein:r[2],tags:r[3],g:r[4],opened:false,
+ ["The Bowery Mission","the-bowery-mission","13-1617086",["Homelessness","Hunger","Children & Youth"],"bowl","bowery.org"],
+ ["USA for UNHCR","usa-for-unhcr","52-1662800",["Immigration & Refugees","International Development","Women & Girls"],"globe","unrefugees.org"],
+ ["Room to Read","room-to-read","91-2003533",["Education & Training","Children & Youth","Women & Girls"],"book","roomtoread.org"],
+ ["Muscular Dystrophy Association","muscular-dystrophy-association","13-1665552",["Health & Medicine"],"cross","mda.org"],
+ ["San Diego Zoo Wildlife Alliance","san-diego-zoo-wildlife-alliance","95-1648219",["Animals","Arts & Culture","Education & Training"],"paw","sdzwa.org"],
+ ["Guide Dogs for the Blind","guide-dogs-for-the-blind","94-1196195",["Animals","Children & Youth","Education & Training"],"paw","guidedogs.com"],
+ ["WildAid","wildaid","20-3644441",["Animals","Environment","Education & Training"],"leaf","wildaid.org"],
+ ["Sea Turtle Conservancy","sea-turtle-conservancy","59-6151069",["Animals","Environment","Education & Training"],"leaf","conserveturtles.org"],
+ ["Crisis Text Line, Inc.","crisis-text-line-inc","46-5039599",["Health & Medicine","Technology"],"chat","crisistextline.org"],
+ ["Utah Food Bank","utah-food-bank","87-0212453",["Hunger"],"bowl","utahfoodbank.org"],
+ ["The Sentencing Project","the-sentencing-project","52-1472546",["Human Rights","Racial Justice","Education & Training"],"scale","sentencingproject.org"],
+ ["Love146","love146","20-1168284",["Children & Youth","Human Rights","Education & Training"],"heart","love146.org"],
+ ["The Farmlink Project","the-farmlink-project","85-1398171",["Hunger","Environment","Disaster Response"],"bowl","farmlinkproject.org"],
+ ["Ali Forney Center","ali-forney-center","30-0104507",["Homelessness","Hunger","LGBTQ"],"roof","aliforneycenter.org"],
+ ["Internet Security Research Group","internet-security-research-group","46-3344200",["Technology"],"chip","abetterinternet.org"],
+ ["Elizabeth Glaser Pediatric AIDS Foundation","elizabeth-glaser-pediatric-aids-foundation","95-4191698",["Health & Medicine","Children & Youth","International Development"],"cross","pedaids.org"],
+ ["Oregon Humane Society","oregon-humane-society","93-0386880",["Animals","Disaster Response","Education & Training"],"paw","oregonhumane.org"],
+ ["Chimp Haven","chimp-haven","74-2766663",["Animals"],"paw","chimphaven.org"],
+ ["Wildlife Conservation Society","wildlife-conservation-society","13-1740011",["Animals","Environment","International Development"],"leaf","wcs.org"],
+ ["NephCure Kidney International","nephcure-kidney-international","38-3569922",["Health & Medicine"],"cross","nephcure.org"],
+ ["Human-I-T","human-i-t","46-0773284",["Technology","Children & Youth","International Development"],"chip","human-i-t.org"],
+ ["The Turing Trust","the-turing-trust","SC046150",["Technology","Education & Training","International Development"],"chip","turingtrust.co.uk"],
+ ["Common Sense Media","common-sense-media","41-2024986",["Children & Youth","Education & Training","Technology"],"book","commonsensemedia.org"],
+ ["Fresh Air Fund","fresh-air-fund","13-1656653",["Children & Youth"],"leaf","freshair.org"],
+ ["Food Bank of Iowa","food-bank-of-iowa","42-1177880",["Hunger"],"bowl","foodbankiowa.org"],
+ ["Pancreatic Cancer Action Network, Inc.","pancreatic-cancer-action-network-inc","33-0841281",["Health & Medicine","Education & Training"],"cross","pancan.org"],
+ ["Diabetes Research Institute Foundation","diabetes-research-institute-foundation","59-1361955",["Health & Medicine"],"cross","diabetesresearch.org"],
+ ["Choose Love","choose-love","83-1378746",["Immigration & Refugees","LGBTQ","Women & Girls"],"globe","chooselove.org"],
+ ["Movember Canada","movember-canada","84821 5604 RR0001",["Health & Medicine"],"cross","movember.com"],
+ ["Boys Hope Girls Hope","boys-hope-girls-hope","51-0182614",["Children & Youth","Education & Training","Racial Justice"],"book","boyshopegirlshope.org"],
+ ["Good Sports","good-sports","75-3138664",["Children & Youth","Health & Medicine","Racial Justice"],"ball","goodsports.org"],
+ ["School on Wheels, Inc.","school-on-wheels-inc","95-4422640",["Children & Youth","Education & Training","Homelessness"],"book","schoolonwheels.org"]
+].map(function(r){return {name:r[0],slug:r[1],ein:r[2],tags:r[3],g:r[4],dom:r[5],opened:false,
   url:"https://thegivingblock.com/donate/"+r[1]+"/"};});
 
 var GLYPH = {
@@ -82,9 +82,14 @@ function hue(seed){
   return HUES[h%HUES.length];
 }
 function avatar(c,size){
+  /* The organisation's own logo, fetched through our proxy. If it does not
+     resolve the lettermark underneath stays visible, so a row is never blank. */
   return '<div class="av'+(size?" "+size:"")+'" style="--h:'+c.h+'">'
     +'<svg class="avg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">'+(GLYPH[c.g]||GLYPH.heart)+'</svg>'
-    +'<span class="avi">'+esc(c.ini)+'</span></div>';
+    +'<span class="avi">'+esc(c.ini)+'</span>'
+    +(c.dom ? '<img class="avl" alt="" loading="lazy" decoding="async" src="/api/logo?d='+encodeURIComponent(c.dom)+'"'
+      +' onload="this.classList.add(\'ok\')" onerror="this.remove()">' : '')
+    +'</div>';
 }
 CH.forEach(function(c){ c.ini=initials(c.name); c.h=hue(c.ein+c.slug); });
 
