@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AID — every launch tied to a verified charity</title>
+<meta name="description" content="Pick a registered nonprofit off the register, launch its coin on pump.fun, and the creator fee goes to them.">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:title" content="AID — every launch tied to a verified charity">
+<meta property="og:description" content="Pick a registered nonprofit off the register. Launch its coin. The creator fee goes to them.">
+<meta property="og:image" content="pfp.png">
+<link rel="stylesheet" href="aid.css">
+</head>
+<body>
+<canvas id="dust"></canvas>
+
+<header class="nav">
+  <div class="wrap navin">
+    <a class="brand" href="#top"><img src="mark.png" alt=""><b>AID</b></a>
+    <nav class="nlinks" id="nl">
+      <a href="#register">Register</a>
+      <a href="#launch">Launch</a>
+      <a href="#fee">The fee</a>
+      <a href="#receipts">Receipts</a>
+      <a href="#how">How it works</a>
+      <a href="#honest">Honest</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="navr">
+      <button class="btn sm" id="wbtn">Connect wallet</button>
+      <a class="btn sm" href="docs.html">Docs</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================================================ hero -->
+<section class="hero">
+  <div class="wrap">
+    <div class="htop">
+      <div>
+        <h1 class="rv">Every launch tied to a <span class="hl">verified charity</span>.</h1>
+        <p class="sub rv">Pick a registered nonprofit off the register. Launch its coin on pump.fun. The creator
+          fee is pointed at that organisation at the moment the coin exists, and there is no function anywhere
+          in this pad that points it somewhere else.</p>
+        <div class="cta rv">
+          <a class="btn p" href="#register">Open the register</a>
+          <button class="btn" id="surprise">Pick one for me</button>
+        </div>
+      </div>
+
+      <aside class="hviz rv">
+        <div class="hv">
+          <div class="hvh"><span class="plab2">Pairing</span><span class="hvn" id="hv-i">—</span></div>
+          <div class="node coin">
+            <div class="av blank"><svg viewBox="0 0 24 24" fill="none" stroke="#3a3a40" stroke-width="1.6" style="width:19px;height:19px"><circle cx="12" cy="12" r="8.4" stroke-dasharray="3 3"/></svg></div>
+            <div><div class="nl" style="color:var(--dim)">No coin yet</div><div class="ns">awaiting a launch</div></div>
+          </div>
+          <div class="route"><span class="rtag">creator fee · 100%</span></div>
+          <div class="node char fade" id="hv-node" title="Pair this one">
+            <div id="hv-av"></div>
+            <div style="min-width:0;flex:1"><div class="nl" id="hv-n">—</div><div class="ns" id="hv-e">—</div></div>
+          </div>
+          <div class="hvtags fade" id="hv-t"></div>
+          <div class="hvf" id="hv-f">—</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="rail rv">
+      <div class="rc"><div class="k">Charities on the register</div><div class="v" id="n-reg">—</div><div class="n">Verified on a live donation rail</div></div>
+      <div class="rc"><div class="k">Coins opened</div><div class="v z" id="n-open">0</div><div class="n" id="n-open-n">No coin has been opened</div></div>
+      <div class="rc"><div class="k">Fees claimed</div><div class="v z">0.0000 <span style="font-size:.5em">SOL</span></div><div class="n">Nothing has accrued</div></div>
+      <div class="rc"><div class="k">Donated, with receipts</div><div class="v z">$0.00</div><div class="n">No receipt exists yet</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ register -->
+<section class="sec" id="register">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="snum">01 — THE REGISTER</div>
+      <h2>Every one of these is a coin nobody has opened yet.</h2>
+      <p class="slead">Not a curated list. These are registered nonprofits with a live crypto-donation route
+        on The Giving Block — real organisations, real tax IDs, real donation pages you can open right now
+        and give to without touching this pad at all.</p>
+    </div>
+
+    <div class="tools rv">
+      <div class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        <input id="q" type="search" placeholder="Search by name or tax ID…" autocomplete="off" spellcheck="false">
+      </div>
+      <select class="sel" id="sort">
+        <option value="az">Sort: A–Z</option>
+        <option value="za">Sort: Z–A</option>
+        <option value="cause">Sort: by cause</option>
+        <option value="open">Sort: unopened first</option>
+      </select>
+    </div>
+    <div class="spread rv" id="spread" title="Causes on the register — click to filter"></div>
+    <div class="chips rv" id="chips"></div>
+    <div class="count rv" id="cnt">—</div>
+    <div class="grid" id="board"></div>
+    <div class="more">
+      <button class="btn" id="showmore" hidden>Show all</button>
+      <button class="btn" id="clearf" hidden>Clear filters</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ launch -->
+<section class="sec" id="launch">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="snum">02 — LAUNCH</div>
+      <h2>Open a coin for a charity.</h2>
+      <p class="slead">Four steps. The only one that decides where money goes is the first, and it is made
+        before anything is signed.</p>
+    </div>
+
+    <div class="steps4 rv" id="stepbar"></div>
+
+    <div class="launch">
+      <div class="panel rv">
+
+        <!-- step 1 -->
+        <div class="pane on" data-p="0">
+          <span class="plab">1 — Charity</span>
+          <div class="slot none" id="slot">
+            <div class="av blank"><svg viewBox="0 0 24 24" fill="none" stroke="#3a3a40" stroke-width="1.7" style="width:18px;height:18px"><path d="M12 5v14M5 12h14"/></svg></div>
+            <div style="min-width:0">
+              <div id="slot-n" style="font-size:14px">No charity selected</div>
+              <div id="slot-e" class="mono" style="font-size:11.4px;color:var(--faint);margin-top:2px">Pick one from the register above</div>
+            </div>
+          </div>
+          <div class="hint">Selecting a row on the register fills this. It is the only field that changes the destination.</div>
+          <div class="nav2">
+            <button class="btn" id="pick-random">Pick one for me</button>
+            <button class="btn p" data-go="1" disabled>Next — name the coin</button>
+          </div>
+        </div>
+
+        <!-- step 2 -->
+        <div class="pane" data-p="1">
+          <span class="plab">2 — The coin</span>
+          <div class="picrow" style="margin-bottom:17px">
+            <label class="pic" id="pic" for="f-img"><svg viewBox="0 0 24 24" fill="none" stroke="#4a4a50" stroke-width="1.5" style="width:22px;height:22px"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.6" cy="9.6" r="1.8"/><path d="m3.6 17.5 5-4.6 4.2 3.6 3-2.6 4.6 3.9"/></svg></label>
+            <input type="file" id="f-img" accept="image/*" hidden>
+            <div style="min-width:0">
+              <div style="font-size:13.6px">Coin image</div>
+              <div class="hint" id="imgn" style="margin-top:4px">Optional. PNG or JPG, square works best.</div>
+            </div>
+          </div>
+          <div class="fld">
+            <label class="plab">Name</label>
+            <input id="f-name" type="text" placeholder="e.g. Clean Water Coin" maxlength="32">
+            <div class="hint" id="h-name">Up to 32 characters.</div>
+          </div>
+          <div class="fld">
+            <label class="plab">Ticker</label>
+            <input id="f-tick" type="text" placeholder="WATER" maxlength="10" spellcheck="false">
+            <div class="hint" id="h-tick">2–10 letters or digits. Cosmetic — it does not affect the pairing.</div>
+          </div>
+          <div class="fld">
+            <label class="plab">Description</label>
+            <textarea id="f-desc" rows="3" maxlength="240" placeholder="What this coin is for."></textarea>
+            <div class="hint"><span id="dcount">0</span>/240</div>
+          </div>
+          <div class="nav2">
+            <button class="btn" data-go="0">Back</button>
+            <button class="btn p" data-go="2" id="to3" disabled>Next — review</button>
+          </div>
+        </div>
+
+        <!-- step 3 -->
+        <div class="pane" data-p="2">
+          <span class="plab">3 — Review</span>
+          <div class="prev" id="prev">
+            <div class="av l blank" id="prev-av"></div>
+            <div style="min-width:0">
+              <div id="prev-n" style="font-size:16px;font-weight:600;letter-spacing:-.015em">—</div>
+              <div id="prev-t" class="mono" style="font-size:12px;color:var(--faint);margin-top:3px">—</div>
+            </div>
+          </div>
+          <p class="hint" id="prev-d" style="margin-top:12px"></p>
+          <div class="lock g" style="margin-top:18px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <span>Signing this creates the coin from <b id="who">your wallet</b> with creator fees on — never
+              trader cashback. pump.fun locks that choice permanently, which is the only reason the fee can be
+              promised to anyone at all.</span>
+          </div>
+          <div class="nav2">
+            <button class="btn" data-go="1">Back</button>
+            <button class="btn g" id="go-launch">Launch on pump.fun</button>
+          </div>
+        </div>
+
+        <!-- step 4 -->
+        <div class="pane" data-p="3">
+          <span class="plab">4 — Handed off</span>
+          <div class="prev" id="done-prev">
+            <div class="av l blank" id="done-av"></div>
+            <div style="min-width:0">
+              <div id="done-n" style="font-size:16px;font-weight:600;letter-spacing:-.015em">—</div>
+              <div id="done-t" class="mono" style="font-size:12px;color:#8fcfa8;margin-top:3px">—</div>
+            </div>
+          </div>
+          <div class="lock" style="margin-top:18px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>
+            <span id="done-msg"></span>
+          </div>
+          <div class="nav2">
+            <button class="btn" id="again">Open pump.fun again</button>
+            <button class="btn" id="copyagain">Copy details</button>
+            <button class="btn p" id="another">Open another charity</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel rv">
+        <span class="plab">Pairing preview</span>
+        <div class="rows">
+          <div class="row"><span class="k">Charity</span><span class="v" id="p-char">—</span></div>
+          <div class="row"><span class="k">Tax ID</span><span class="v" id="p-ein">—</span></div>
+          <div class="row"><span class="k">Donation route</span><span class="v" id="p-route">—</span></div>
+          <div class="row"><span class="k">Coin</span><span class="v" id="p-coin">—</span></div>
+          <div class="row"><span class="k">Launched by</span><span class="v" id="p-by">—</span></div>
+          <div class="row"><span class="k">Fee mode</span><span class="v ok">Creator fees — never cashback</span></div>
+          <div class="row"><span class="k">Fee destination</span><span class="v" id="p-dest">—</span></div>
+          <div class="row"><span class="k">Launcher's share</span><span class="v no">0% — nothing, at any size</span></div>
+          <div class="row"><span class="k">Pad's share of the donation</span><span class="v no">0% — nothing, ever</span></div>
+          <div class="row"><span class="k">Deploy cost</span><span class="v">~0.02 SOL — paid by you, to Solana</span></div>
+          <div class="row"><span class="k">Reversible</span><span class="v no">No. Locked at launch.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ fee -->
+<section class="sec" id="fee">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="snum">03 — THE FEE</div>
+      <h2>The creator fee is not a number we made up.</h2>
+      <p class="slead">pump.fun publishes what a creator earns, and it moves with the coin's market cap.
+        Below is that published curve, and arithmetic on numbers you choose. It is not live data and it is
+        not a forecast — it is a calculator.</p>
+    </div>
+
+    <div class="fee">
+      <div class="panel rv">
+        <span class="plab">Market cap</span>
+        <div class="big mono" id="mc">0 <small>SOL</small></div>
+        <input type="range" id="s-mc" min="0" max="1000" value="180">
+        <div class="rlab"><span>0</span><span>200,000 SOL</span></div>
+
+        <div style="height:22px"></div>
+        <span class="plab">24-hour trading volume</span>
+        <div class="big mono" id="vol">0 <small>SOL</small></div>
+        <input type="range" id="s-vol" min="0" max="1000" value="320">
+        <div class="rlab"><span>0</span><span>50,000 SOL</span></div>
+
+        <div class="out">
+          <span class="plab">Creator fee accrued over that day</span>
+          <div class="big mono" id="fee-out">0.0000 <small>SOL</small></div>
+          <p class="hint" id="fee-note" style="margin-top:9px"></p>
+          <div class="rows" style="margin-top:14px">
+            <div class="row"><span class="k">Goes to the charity</span><span class="v ok" id="fee-char">100%</span></div>
+            <div class="row"><span class="k">Goes to the launcher</span><span class="v no">0.0000 SOL</span></div>
+            <div class="row"><span class="k">Goes to this pad</span><span class="v no">0.0000 SOL</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv">
+        <div class="band" id="bands"></div>
+        <p class="hint" style="margin-top:14px;padding:0 2px">
+          Click a band to jump the calculator into it. Between 1,470 and 98,240 SOL the creator share tapers
+          along a published curve rather than sitting at a flat rate, so the calculator shows a range there
+          instead of inventing a single number.</p>
+        <div class="panel" style="margin-top:14px">
+          <span class="plab">What pump.fun does not have</span>
+          <p style="color:var(--fg2);font-size:13.9px">
+            There is no "charity" field on pump.fun. No checkbox, no partner list, no built-in way to attach a
+            nonprofit to a coin. The only thing a coin has is a creator, and the only thing a creator has is a
+            fee vault. So the pairing is not a feature we found — it is the one we build on top: the vault, and
+            a standing instruction to empty it into a donation route that belongs to somebody else.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ receipts -->
+<section class="sec" id="receipts">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="snum">04 — RECEIPTS</div>
+      <h2>A row with no receipt is not a donation.</h2>
+      <p class="slead">Every donation produces a confirmation from the rail it went through, and that
+        confirmation gets attached to the coin's row. This table is what the pad has actually sent.</p>
+    </div>
+    <div class="ledger rv">
+      <div class="lhead"><span>Charity</span><span>Coin</span><span>Donated</span><span>Receipt</span></div>
+      <div class="lbody" id="lbody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ how -->
+<section class="sec" id="how">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="snum">05 — HOW IT WORKS</div>
+      <h2>Ten steps, and nothing hidden between them.</h2>
+      <p class="slead">Open any one of them for the part most pads leave out.</p>
+    </div>
+    <ol class="how rv" id="howlist"></ol>
+  </div>
+</section>
+
+<!-- ============================================================ honest -->
+<section class="sec" id="honest">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="snum">06 — WHAT WE ARE NOT GOING TO PRETEND</div>
+      <h2>The uncomfortable parts, in the same size type.</h2>
+    </div>
+    <div class="hon rv">
+      <div class="hc"><b>"Verified" means registered, not partnered.</b><p>The tick means we matched the organisation to a real registered nonprofit and a working donation route. It does not mean they endorse this, know about this, or have agreed to anything. We do not use their logos, because a logo next to a launch button would claim a relationship that does not exist.</p></div>
+      <div class="hc"><b>A coin is not a donation.</b><p>You are buying a memecoin. It can go to zero and it probably will. The donation is funded by trading fees, not by your purchase, and nothing you buy gives you a tax receipt for anything.</p></div>
+      <div class="hc"><b>A quiet coin donates nothing.</b><p>No trading, no fee, no donation. A coin nobody touches sends a charity exactly zero, and its row will say so rather than sitting blank and hopeful.</p></div>
+      <div class="hc"><b>The rail is not ours.</b><p>Donation processors have minimums, jurisdictions and rules, and they can change them without asking us. If a route closes, coins depending on it cannot donate, and that appears on the board as a stopped row with the reason.</p></div>
+      <div class="hc"><b>Charities are not a shield.</b><p>Pointing a fee at a good cause does not make a memecoin a good investment, and we are not going to write a sentence that implies it does.</p></div>
+      <div class="hc"><b>The pad's program is not live.</b><p>Launching from here opens pump.fun with your coin's details ready. The fee-routing instruction is the pad's job, and until its program ships that part is on you — so every charity's own donation page is one click from its row.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ faq -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="shead rv"><div class="snum">07 — QUESTIONS</div><h2>The ones worth answering.</h2></div>
+    <div class="faq rv" id="faqbox"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fin">
+    <div class="l"><img src="mark.png" alt="">AID · the fee is not yours</div>
+    <nav>
+      <a href="docs.html">Docs</a>
+      <a href="#register">Register</a>
+      <a href="#honest">Honest</a>
+      <a href="https://thegivingblock.com/resources/nonprofits-accepting-crypto-donations/" target="_blank" rel="noopener">Source register ↗</a>
+    </nav>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script src="aid.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AID — reference</title>
+<meta name="description" content="How the pairing, the fee, the claim cadence and the receipts actually work.">
+<link rel="icon" href="favicon.png">
+<style>
+:root{
+  --bg:#070708; --bg2:#0b0b0c; --card:#111112; --card2:#151517;
+  --hair:#232325; --hair2:#2e2e31;
+  --fg:#f4f4f5; --fg2:#a9a9b0; --dim:#6e6e76; --faint:#46464d;
+  --tick:#4aa86c; --amber:#c2913f;
+  --mono:ui-monospace,"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;
+  line-height:1.68;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:#9fd9b6}
+h1,h2,h3{margin:0;font-weight:640;letter-spacing:-.024em;line-height:1.2}
+p{margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+header.nav{position:sticky;top:0;z-index:60;background:rgba(7,7,8,.85);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+.navin{width:min(1180px,100% - clamp(24px,6vw,72px));margin-inline:auto;
+  display:flex;align-items:center;gap:16px;height:60px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit}
+.brand img{width:19px;height:19px}
+.brand b{font-size:15.5px;letter-spacing:.14em;font-weight:680}
+.brand span{color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:.09em}
+.navin .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--hair2);
+  background:var(--card2);border-radius:10px;padding:7px 14px;font-size:12.8px;
+  text-decoration:none;color:var(--fg);transition:background .16s,border-color .16s}
+.btn:hover{background:#1b1b1e;border-color:#3d3d41}
+
+.shell{width:min(1180px,100% - clamp(24px,6vw,72px));margin-inline:auto;
+  display:grid;grid-template-columns:216px minmax(0,1fr);gap:clamp(28px,5vw,64px);
+  padding:clamp(34px,5vw,60px) 0 90px}
+aside{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 100px);overflow:auto}
+aside .g{font-family:var(--mono);font-size:10.4px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);margin:20px 0 9px}
+aside .g:first-child{margin-top:0}
+aside a{display:block;text-decoration:none;color:var(--dim);font-size:13.1px;padding:4px 10px;
+  border-left:1px solid var(--hair);transition:color .15s,border-color .15s}
+aside a:hover{color:var(--fg2)}
+aside a.on{color:var(--fg);border-color:var(--tick)}
+
+main{min-width:0}
+main h1{font-size:clamp(28px,4vw,42px);letter-spacing:-.032em}
+.lead{margin-top:16px;color:var(--fg2);font-size:16.4px;max-width:68ch}
+section{padding-top:44px;scroll-margin-top:76px}
+section h2{font-size:clamp(19px,2.3vw,24px);padding-bottom:12px;border-bottom:1px solid var(--hair)}
+section h3{font-size:15.6px;margin-top:26px;color:#e8e8ea}
+section p{margin-top:14px;color:var(--fg2);max-width:76ch}
+section p b{color:var(--fg);font-weight:590}
+code{font-family:var(--mono);font-size:.9em;background:#18181b;border:1px solid var(--hair);
+  border-radius:5px;padding:1px 5px;color:#cfcfd4}
+
+table{width:100%;border-collapse:collapse;margin-top:18px;table-layout:fixed;
+  border:1px solid var(--hair);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--hair);
+  font-size:13.4px;overflow-wrap:anywhere;vertical-align:top}
+th{background:var(--card2);font-family:var(--mono);font-size:10.6px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);font-weight:500}
+td{background:var(--card);color:var(--fg2)}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--mono);color:var(--fg);font-variant-numeric:tabular-nums}
+td.ok{color:#8fcfa8}
+td.no{color:var(--faint)}
+
+.note{border:1px solid var(--hair2);background:var(--card);border-radius:12px;
+  padding:16px 18px;margin-top:20px;font-size:13.9px;color:var(--fg2)}
+.note.w{border-color:#33280f;background:rgba(194,145,63,.055);color:#d9bd86}
+.note b{display:block;color:inherit;margin-bottom:5px;font-weight:600}
+.note.w b{color:#e6c79a}
+
+ul{margin:14px 0 0;padding-left:20px;color:var(--fg2)}
+li{margin:7px 0;max-width:74ch}
+li::marker{color:var(--faint)}
+
+footer{border-top:1px solid var(--hair);padding:30px 0 60px}
+.fin{width:min(1180px,100% - clamp(24px,6vw,72px));margin-inline:auto;
+  display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:12px;color:var(--faint)}
+.fin a{color:var(--dim);text-decoration:none}
+.fin a:hover{color:var(--fg)}
+
+@media(max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:4px;
+    border-bottom:1px solid var(--hair);padding-bottom:18px}
+  aside .g{display:none}
+  aside a{border-left:0;border:1px solid var(--hair);border-radius:999px;padding:4px 11px;font-size:12.2px}
+  aside a.on{border-color:var(--tick)}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="navin">
+    <a class="brand" href="index.html"><img src="mark.png" alt=""><b>AID</b><span>/ reference</span></a>
+    <div class="sp"></div>
+    <a class="btn" href="index.html">← Back to the register</a>
+  </div>
+</header>
+
+<div class="shell">
+  <aside id="toc">
+    <div class="g">The idea</div>
+    <a href="#what">What this is</a>
+    <a href="#why">Why it can exist</a>
+    <div class="g">The register</div>
+    <a href="#register">Where it comes from</a>
+    <a href="#verified">What "verified" means</a>
+    <a href="#removal">Removal</a>
+    <div class="g">Launching</div>
+    <a href="#pairing">The pairing</a>
+    <a href="#once">One charity, one coin</a>
+    <a href="#costs">What it costs</a>
+    <div class="g">The money</div>
+    <a href="#fee">The creator fee</a>
+    <a href="#curve">The published curve</a>
+    <a href="#claim">Claim cadence</a>
+    <a href="#rail">The donation rail</a>
+    <a href="#receipts">Receipts</a>
+    <div class="g">The rest</div>
+    <a href="#posted">What gets posted</a>
+    <a href="#risk">Risks</a>
+    <a href="#notbuilt">Not built yet</a>
+    <a href="#sources">Sources</a>
+  </aside>
+
+  <main>
+    <h1>AID — reference</h1>
+    <p class="lead">A launchpad where the creator fee is pointed at a registered nonprofit at the moment the
+      coin exists. This page is the long version: what is real, what is arithmetic, and what is not built.</p>
+
+    <section id="what">
+      <h2>What this is</h2>
+      <p>Open any launchpad and read what it does with the creator fee. Some of it buys back. Some of it goes
+        to a vault. Some goes to the team and is described as going to the ecosystem. The one thing all of them
+        agree on is that the fee belongs to somebody inside the building.</p>
+      <p>AID is a pump.fun launchpad where the fee is not yours, not ours and not negotiable. You pick a
+        registered nonprofit off a public register, the coin deploys with its creator fee pointed at that
+        organisation's donation route, and there is no function in the pad that points it anywhere else.</p>
+    </section>
+
+    <section id="why">
+      <h2>Why it can exist at all</h2>
+      <p>There is no charity feature on pump.fun. No checkbox, no partner list, no field on the launch form.
+        We looked, because a pad that claims a platform integration it does not have is the first thing
+        anyone should check.</p>
+      <p>What pump.fun does have is a <b>creator</b>, a <b>creator fee vault</b>, and — since the February 2026
+        change — a choice made at launch between <b>creator fees</b> and <b>trader cashback</b> that is
+        <b>permanently locked</b> afterwards. That lock is the whole mechanism. AID always chooses creator fees,
+        never cashback, and the vault's standing instruction is a donation route belonging to someone else.</p>
+      <div class="note"><b>In one line</b>The pairing is not a platform feature we found. It is a standing
+        instruction on a vault that the platform will not let anyone re-point later.</div>
+    </section>
+
+    <section id="register">
+      <h2>Where the register comes from</h2>
+      <p>The board is not curated. It is the subset of registered nonprofits that have a live crypto-donation
+        route — organisations that have filed, been granted status, and can actually receive a donation in a
+        form they already chose to accept.</p>
+      <p>That last condition is the filter that matters. A charity we cannot pay is a charity we should not be
+        advertising, so a nonprofit with no working route does not get a row, however good the cause.</p>
+      <p>Nobody applies. Nobody pays to be listed. Every row carries a tax ID so you can look the organisation
+        up yourself, and links straight to its own donation page so you can give without touching this pad at all.</p>
+    </section>
+
+    <section id="verified">
+      <h2>What "verified" means, exactly</h2>
+      <table>
+        <tr><th>The tick means</th><th>The tick does not mean</th></tr>
+        <tr>
+          <td class="ok">A registered nonprofit with a published tax ID</td>
+          <td class="no">That they have heard of AID</td>
+        </tr>
+        <tr>
+          <td class="ok">A live crypto-donation route we can actually pay</td>
+          <td class="no">That they endorse, approve or partner with anything here</td>
+        </tr>
+        <tr>
+          <td class="ok">A donation page anyone can open and verify right now</td>
+          <td class="no">That they have agreed to receive money from a memecoin</td>
+        </tr>
+      </table>
+      <p>We do not use any charity's logo, wordmark or branding anywhere on this site. The avatars on the
+        register are generic category glyphs we drew. If a real logo ever appears, it will be because that
+        organisation put it there.</p>
+    </section>
+
+    <section id="removal">
+      <h2>Removal</h2>
+      <p>Immediately, on request, with no form and no argument. The pairing is severed, the row is marked
+        removed with the date, and anything already accrued is donated to them anyway unless they refuse it.</p>
+      <div class="note w"><b>The uncomfortable part</b>This pad launches coins named after organisations that
+        did not ask for it. That is a real thing to be uncomfortable about, and the only honest answer is that
+        any of them can end it with an email.</div>
+    </section>
+
+    <section id="pairing">
+      <h2>The pairing</h2>
+      <p>The launch form has one field that decides anything: the charity. Name, ticker and image come next,
+        the way they do on any pad, but the destination is chosen before a single instruction is signed.</p>
+      <table>
+        <tr><th>Step</th><th>What happens</th><th>Reversible</th></tr>
+        <tr><td class="n">1</td><td>Charity selected from the register</td><td class="n">Yes — until you sign</td></tr>
+        <tr><td class="n">2</td><td>Coin deploys with creator fees on, cashback off</td><td class="no">No</td></tr>
+        <tr><td class="n">3</td><td>Vault's standing instruction set to that charity's route</td><td class="no">No</td></tr>
+        <tr><td class="n">4</td><td>Charity leaves the board as a launch target</td><td class="n">Only by removal</td></tr>
+      </table>
+    </section>
+
+    <section id="once">
+      <h2>One charity, one coin, forever</h2>
+      <p>A charity can be opened exactly once. The moment somebody opens it, that organisation is off the board
+        as a launch target and the pairing is permanent.</p>
+      <p>The reason is not sentimental. If a cause could be launched fifty times, the register would fill with
+        fifty versions of it, every one claiming to be the real one, and the whole thing would be a farm inside
+        a week. One pairing makes it a register instead of a race.</p>
+    </section>
+
+    <section id="costs">
+      <h2>What it costs, and who keeps what</h2>
+      <table>
+        <tr><th>Item</th><th>Amount</th><th>Who receives it</th></tr>
+        <tr><td>Deploy cost</td><td class="n">~0.02 SOL</td><td>Solana network / pump.fun</td></tr>
+        <tr><td>Launch fee</td><td class="n">Shown before you sign</td><td>This pad</td></tr>
+        <tr><td>Cut of any donation</td><td class="n">0%</td><td class="no">Nobody. Not at any size.</td></tr>
+        <tr><td>Launcher's share of the fee</td><td class="n">0%</td><td class="no">Nothing. No split, no referral, no tier.</td></tr>
+      </table>
+      <p>If launching paid, the register would fill with whoever could launch fastest rather than whoever cared,
+        and the charity would be the marketing rather than the point.</p>
+    </section>
+
+    <section id="fee">
+      <h2>The creator fee</h2>
+      <p>On pump.fun a trade pays a fee, and a slice of that fee accrues to the coin's creator in a vault until
+        somebody claims it. That slice is what funds every donation here. It is not a cut of your purchase and
+        it is not a percentage of market cap — it is a percentage of <b>volume</b>.</p>
+      <p>Which means the honest version of "this coin supports a charity" is: a coin nobody trades supports
+        nothing at all.</p>
+    </section>
+
+    <section id="curve">
+      <h2>The published curve</h2>
+      <p>The creator's share is not fixed. Under Dynamic Fees V1 it moves with the coin's market cap, and
+        pump.fun publishes the anchors:</p>
+      <table>
+        <tr><th>Market cap</th><th>Creator share</th><th>Phase</th></tr>
+        <tr><td class="n">under 420 SOL</td><td class="n">0.30%</td><td>Bonding curve</td></tr>
+        <tr><td class="n">420 – 1,470 SOL</td><td class="n">0.95%</td><td>Graduated — peak share</td></tr>
+        <tr><td class="n">1,470 – 98,240 SOL</td><td class="n">0.95% → 0.05%</td><td>Tapering along the curve</td></tr>
+        <tr><td class="n">above 98,240 SOL</td><td class="n">0.05%</td><td>Floor</td></tr>
+      </table>
+      <div class="note"><b>Why the calculator shows a range in the middle</b>pump.fun publishes a curve for that
+        band, not a flat rate. Picking a single number to put in the middle would make the arithmetic look
+        tidier and would be an invention, so the calculator gives the range the taper is bounded by instead.</div>
+    </section>
+
+    <section id="claim">
+      <h2>Claim cadence</h2>
+      <p>Creator fees do not move by themselves. They sit in the vault until a <code>collectCreatorFee</code>
+        instruction pulls them. On a fixed cadence the pad claims what has accrued for each coin and moves it
+        into that coin's donation batch.</p>
+      <ul>
+        <li>If a coin traded, there is something to claim and the amount is posted.</li>
+        <li>If it did not, the cycle is recorded as a cycle in which nothing was claimed — a row we publish rather than a row we skip.</li>
+        <li>Batching exists because donation rails have minimums; a claim below the minimum waits for the next cycle and says so.</li>
+      </ul>
+    </section>
+
+    <section id="rail">
+      <h2>The donation rail</h2>
+      <p>We do not hold charity money and we do not run a treasury. Each donation goes out through the
+        crypto-donation processor the charity has <b>already registered with</b> — the same route any other
+        donor would use, under their own terms and their own compliance.</p>
+      <p>The practical effect is that the charity receives it in the form they already chose to receive
+        donations in, and does not need to know what a launchpad is in order to be paid.</p>
+      <div class="note w"><b>The rail is not ours</b>Processors have minimums, jurisdictions and rules, and can
+        change them without asking us. If a route closes, coins depending on it cannot donate, and that appears
+        on the board as a stopped row with the reason attached.</div>
+    </section>
+
+    <section id="receipts">
+      <h2>Receipts</h2>
+      <p>Every donation produces a confirmation from the rail it went through. That confirmation is attached to
+        the coin's row with the date and the amount.</p>
+      <p>A row with no receipt is a row that says <b>no donation has been made yet</b>, in those words. There is
+        no state on this site where a promise is displayed as if it were a payment, and no place where a
+        pending number is rendered in the same type as a settled one.</p>
+    </section>
+
+    <section id="posted">
+      <h2>What gets posted</h2>
+      <table>
+        <tr><th>Scope</th><th>Published</th></tr>
+        <tr><td>Per coin</td><td>The charity, the pairing block, fees claimed, every donation sent, and the receipt for each</td></tr>
+        <tr><td>Per cycle</td><td>What was claimed, what was donated, and what was not — with the reason</td></tr>
+        <tr><td>Per charity</td><td>Total received through this pad since the pairing, nothing averaged, nothing projected</td></tr>
+      </table>
+      <p>No leaderboards of generosity, no impact estimates, no "meals funded" arithmetic we invented out of a
+        conversion rate we found somewhere. A list of donations with receipts attached.</p>
+    </section>
+
+    <section id="risk">
+      <h2>Risks, stated plainly</h2>
+      <ul>
+        <li><b>A coin is not a donation.</b> You are buying a memecoin. It can go to zero and it probably will.</li>
+        <li><b>No tax receipt.</b> The donation is made by the pad from fees, not by you from your purchase.</li>
+        <li><b>A quiet coin pays nothing.</b> No trading means no fee means no donation.</li>
+        <li><b>A charity may want out.</b> Pairings can be severed at the organisation's request at any time.</li>
+        <li><b>A rail can close.</b> Processors change their rules and a route can stop working mid-pairing.</li>
+        <li><b>A promise is not a contract.</b> A site saying the fee goes to charity is not the same as something enforcing it. The receipts table is the only evidence that counts, and it is currently empty.</li>
+        <li><b>Charities are not a shield.</b> Pointing a fee at a good cause does not make a memecoin a good investment.</li>
+      </ul>
+    </section>
+
+    <section id="notbuilt">
+      <h2>What is not built yet</h2>
+      <p>Nothing is deployed. No coin has been opened, no fee has been claimed, and no donation has been sent.
+        The counters on the front page read zero rather than being filled with something plausible, because a
+        dash is not a zero and a zero is not a guess.</p>
+      <p>The register is real — every organisation on it exists, has a published tax ID, and has a donation page
+        you can open right now. What is not real yet is a single row with a receipt on it, and that is the only
+        number that will ever matter here.</p>
+    </section>
+
+    <section id="sources">
+      <h2>Sources</h2>
+      <ul>
+        <li>The register and every donation link: <a href="https://thegivingblock.com/resources/nonprofits-accepting-crypto-donations/" target="_blank" rel="noopener">The Giving Block — nonprofits accepting crypto donations</a></li>
+        <li>Fee mode locked at launch, creator fees vs trader cashback: <a href="https://crypto.news/pump-fun-flips-creator-fees-launches-trader-cashback/" target="_blank" rel="noopener">crypto.news, February 2026</a></li>
+        <li>Deploy cost and base fee structure: <a href="https://www.soltokencreator.io/blog/pump-fun-fees-explained" target="_blank" rel="noopener">pump.fun fees explained</a></li>
+        <li>Dynamic Fees V1 anchors: <a href="https://smithii.io/en/project-ascend-update/" target="_blank" rel="noopener">Project Ascend</a></li>
+        <li>Claiming creator fees: <a href="https://pumpportal.fun/creator-fee/" target="_blank" rel="noopener">PumpPortal — collectCreatorFee</a></li>
+        <li>The bonding curve itself: <a href="https://pump.fun/docs/bonding-curve" target="_blank" rel="noopener">pump.fun docs</a></li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="fin">
+    <span>AID · the fee is not yours</span>
+    <span><a href="index.html">Register</a> · <a href="#what">Top</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll("#toc a"));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute("href"));}).filter(Boolean);
+  var t=false;
+  function mark(){
+    var best=-1;
+    secs.forEach(function(s,i){ if(s.getBoundingClientRect().top<=140) best=i; });
+    links.forEach(function(a,i){ a.classList.toggle("on", i===best); });
+  }
+  window.addEventListener("scroll",function(){
+    if(t) return; t=true;
+    requestAnimationFrame(function(){ mark(); t=false; });
+  },{passive:true});
+  window.addEventListener("load",function(){
+    var l=document.createElement("link"); l.rel="stylesheet";
+    l.href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap";
+    document.head.appendChild(l);
+  });
+  mark();
+})();
+</script>
+</body>
+</html>
